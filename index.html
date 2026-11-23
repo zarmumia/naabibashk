@@ -229,7 +229,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 <div class="zellige" aria-hidden="true"></div>
 <footer><div class="wrap">
   <span>נעביבשק · מילים שגדלנו עליהן</span>
-  <span>משלוח חינם מ־2 תמונות · תשלום מאובטח בפיימי</span>
+  <span>משלוח עד הבית · תשלום מאובטח בפיימי</span>
   <nav class="flinks"><a href="#shipping">משלוחים ושירות</a><a href="#terms">תקנון וביטולים</a><a href="#privacy">פרטיות</a><a href="#access">נגישות</a></nav>
 </div></footer>
 
@@ -311,15 +311,16 @@ const save=()=>{try{localStorage.setItem('mm-cart',JSON.stringify(cart))}catch(e
 const updCount=()=>{document.getElementById('count').textContent=cart.reduce((a,b)=>a+b.q,0)};
 
 function framedTotal(n){const t=Math.floor(n/3),r=n%3;return t*TRIPLE+(r===2?PAIR:r*PRICE_FRAMED)}
+let pickup=false;try{pickup=localStorage.getItem('mm-pickup')==='1'}catch(e){}
 function totals(){
   const nF=cart.filter(x=>x.kind==='framed').reduce((a,b)=>a+b.q,0);
   const nP=cart.filter(x=>x.kind==='poster').reduce((a,b)=>a+b.q,0);
   const sets=cart.filter(x=>x.kind==='set'||x.kind==='trip'), setSum=sets.reduce((a,b)=>a+(b.kind==='trip'?TRIPLE:SET_PRICE[b.size])*b.q,0);
   const nX=cart.filter(x=>x.kind==='test').reduce((a,b)=>a+b.q,0)*5; // מוצר בדיקה נסתר, #test
   const full=nF*PRICE_FRAMED+nP*POSTER+setSum+nX, fr=framedTotal(nF);
-  const ship=(nF===1&&!sets.length)?SHIP:0, sub=fr+nP*POSTER+setSum+nX; // משלוח חינם מ־2 תמונות או בסט
-  const save=nF*PRICE_FRAMED-fr, saved=save+((!ship&&(nF>1||sets.length))?SHIP:0);
-  return {nF,nP,full,save,saved,sub,ship,total:sub+ship};
+  const phys=nF>0||sets.length>0, ship=(phys&&!pickup)?SHIP:0, sub=fr+nP*POSTER+setSum+nX; // משלוח אחד להזמנה, תמיד על הלקוח
+  const save=nF*PRICE_FRAMED-fr, saved=save;
+  return {nF,nP,full,save,saved,sub,ship,phys,total:sub+ship};
 }
 function toast(t){const d=document.createElement('div');d.className='toast';d.textContent=t;d.setAttribute('role','status');document.body.appendChild(d);setTimeout(()=>d.remove(),2200)}
 
@@ -343,14 +344,14 @@ function shop(){
       <h2 class="disp" style="font-size:clamp(28px,3.4vw,40px);line-height:1.15">פיוטים, שירים ומילים של הבית, ממוסגרים לקיר</h2>
       <p>שורות מהפיוטים והשירים שליוו את הבתים שלנו, בעיצוב נקי ובאות עברית מסורתית. כל הדפס מגיע ממוסגר עם פספרטו, מוכן לתלייה.</p>
       <a class="cta" href="#prints">בוחרים 2 או 3 הדפסים</a>
-      <div class="facts"><span>זכוכית ופספרטו</span><span>מסגרת 30×40 ס״מ</span><span>משלוח חינם מ־2 תמונות</span></div>
+      <div class="facts"><span>זכוכית ופספרטו</span><span>מסגרת 30×40 ס״מ</span><span>משלוח עד הבית</span></div>
     </div>
     <a href="#trip"><img src="img/trip.webp" alt="טריפטיך ממוסגר: אעופה אשכונה, צללית ילד ושמח בני" style="aspect-ratio:auto"></a>
   </section>
   <div class="deal"><div class="wrap">
-    <div class="d"><span class="dn">הדפס 1</span><b>${nis(PRICE_FRAMED)}</b><span class="ds">משלוח ${nis(SHIP)}</span></div>
-    <div class="d"><span class="dn">2 הדפסים</span><b>${nis(PAIR)}</b><span class="ds">משלוח חינם</span></div>
-    <div class="d"><span class="dn">3 הדפסים</span><b>${nis(TRIPLE)}</b><span class="ds">משלוח חינם</span></div>
+    <div class="d"><span class="dn">הדפס 1</span><b>${nis(PRICE_FRAMED)}</b><span class="ds">+ משלוח</span></div>
+    <div class="d"><span class="dn">2 הדפסים</span><b>${nis(PAIR)}</b><span class="ds">+ משלוח</span></div>
+    <div class="d"><span class="dn">3 הדפסים</span><b>${nis(TRIPLE)}</b><span class="ds">+ משלוח</span></div>
   </div><div class="all">משלבים כל הדפס שרוצים, בכל צבע מסגרת</div></div>
   <a class="wrap feature" href="#set">
     <img src="img/set.jpg" alt="שלושה בלוקי עץ: מענטש בצהוב, קיבוץ גלויות בירוק ונעביבשק בכחול">
@@ -416,12 +417,12 @@ function product(p){
         <div class="qty"><button type="button" id="minus" aria-label="פחות">−</button><output id="q">1</output><button type="button" id="plus" aria-label="עוד">+</button></div>
         <button type="button" class="cta add" id="add">הוספה לעגלה</button>
       </div>
-      <p class="pairhint" id="pairhint">כל 2 הדפסים מהחנות, לבחירתך, ב־${nis(PAIR)} עם משלוח חינם. כל 3 ב־${nis(TRIPLE)}. אפשר לשלב הדפסים וצבעי מסגרת שונים.</p>
+      <p class="pairhint" id="pairhint">כל 2 הדפסים מהחנות, לבחירתך, ב־${nis(PAIR)}. כל 3 ב־${nis(TRIPLE)}. אפשר לשלב הדפסים וצבעי מסגרת שונים.</p>
       <dl class="spec">
-        <div><dt>2 או 3 הדפסים</dt><dd>כל 2 לבחירתך ${nis(PAIR)} · כל 3 ${nis(TRIPLE)}, משלוח חינם</dd></div>
+        <div><dt>2 או 3 הדפסים</dt><dd>כל 2 לבחירתך ${nis(PAIR)} · כל 3 ${nis(TRIPLE)}</dd></div>
         <div><dt>הדפסה</dt><dd id="sp-print">15×21 ס״מ</dd></div>
         <div><dt>מסגרת</dt><dd id="sp-frame">עץ 20×30 ס״מ, עם זכוכית ופספרטו לבן</dd></div>
-        <div><dt>משלוח</dt><dd>שליח עד הבית. חינם מ־2 תמונות, ולתמונה בודדת ${nis(SHIP)}</dd></div>
+        <div><dt>משלוח</dt><dd>שליח עד הבית, ${nis(SHIP)} להזמנה</dd></div>
       </dl>
     </div>
   </section>`;
@@ -444,8 +445,8 @@ function product(p){
     if(ex)ex.q+=q;else cart.push({key,id:p.id,kind,color:kind==='framed'?color:null,q});
     save();
     const n=totals().nF;
-    toast(n===1?'נוסף לעגלה · עוד הדפס אחד לבחירתך, ושניהם ב־'+nis(PAIR)+' עם משלוח חינם':n===2?'נוסף לעגלה · 2 הדפסים ב־'+nis(PAIR)+', משלוח חינם':'נוסף לעגלה');
-    if(n===1){document.getElementById('pairhint').innerHTML='בחרו עוד הדפס אחד, כל הדפס שתרצו, ושניהם יעלו '+nis(PAIR)+' עם משלוח חינם. <a href="#prints">לבחירת השני</a>';}
+    toast(n===1?'נוסף לעגלה · עוד הדפס אחד לבחירתך, ושניהם ב־'+nis(PAIR):n===2?'נוסף לעגלה · 2 הדפסים ב־'+nis(PAIR):'נוסף לעגלה');
+    if(n===1){document.getElementById('pairhint').innerHTML='בחרו עוד הדפס אחד, כל הדפס שתרצו, ושניהם יעלו '+nis(PAIR)+'. <a href="#prints">לבחירת השני</a>';}
   };
   sync();
 }
@@ -474,10 +475,15 @@ function cartView(){
     <aside class="sum" aria-label="סיכום הזמנה">
       <div class="l"><span>מחיר מלא</span><span>${nis(t.full)}</span></div>
       ${t.save>0?`<div class="l save"><span>הנחה על כמה הדפסים</span><span><bdi dir="ltr">−${nis(t.save)}</bdi></span></div>`:''}
-      <div class="l"><span>משלוח</span><span>${t.ship?nis(t.ship):((t.nF>1||cart.some(x=>x.kind==='set'||x.kind==='trip'))?'חינם':'—')}</span></div>
+      ${t.phys?`<fieldset class="opt dl"><legend>איך לקבל</legend>
+        <label class="gift"><input type="radio" name="dl" value="0" ${pickup?'':'checked'}> משלוח עד הבית · ${nis(SHIP)}</label>
+        <label class="gift"><input type="radio" name="dl" value="1" ${pickup?'checked':''}> איסוף עצמי בכפר סבא · חינם</label>
+        ${pickup?'<small>ניצור קשר לתיאום מקום ושעת האיסוף.</small>':''}
+      </fieldset>`:''}
+      <div class="l"><span>${pickup&&t.phys?'איסוף עצמי':'משלוח'}</span><span>${t.ship?nis(t.ship):(pickup&&t.phys?'חינם':'—')}</span></div>
       <div class="l tot"><span>לתשלום</span><span>${nis(t.total)}</span></div>
-      ${t.saved>0?`<div class="l save saved"><span>חסכת, כולל המשלוח</span><span>${nis(t.saved)}</span></div>`:''}
-      ${t.nF===1&&!t.ship?'':''}${t.nF===1&&t.ship?`<small>עוד הדפס אחד לבחירתך: שניהם ב־${nis(PAIR)} והמשלוח חינם.</small>`:''}${t.nF===4?`<small>עוד הדפס אחד, ושני האחרונים יחושבו ב־${nis(PAIR)}.</small>`:''}
+      ${t.saved>0?`<div class="l save saved"><span>חסכת</span><span>${nis(t.saved)}</span></div>`:''}
+      ${t.nF===1&&!t.ship?'':''}${t.nF===1&&t.ship?`<small>עוד הדפס אחד לבחירתך: שניהם ב־${nis(PAIR)}.</small>`:''}${t.nF===4?`<small>עוד הדפס אחד, ושני האחרונים יחושבו ב־${nis(PAIR)}.</small>`:''}
       ${cart.length?`
       <form class="co" id="co" novalidate>
         <div class="f"><label for="fn">שם מלא</label><input id="fn" required autocomplete="name"></div>
@@ -485,11 +491,11 @@ function cartView(){
           <div class="f"><label for="ph">טלפון</label><input id="ph" type="tel" required autocomplete="tel"></div>
           <div class="f"><label for="em">אימייל</label><input id="em" type="email" required autocomplete="email"></div>
         </div>
-        ${(t.nF||cart.some(x=>x.kind==='set'||x.kind==='trip'))?`<div class="two">
+        ${(t.phys&&!pickup)?`<div class="two">
           <div class="f"><label for="st">רחוב ומספר</label><input id="st" required autocomplete="street-address"></div>
           <div class="f"><label for="ct">עיר</label><input id="ct" required autocomplete="address-level2"></div>
         </div>`:''}
-        ${(t.nF||cart.some(x=>x.kind==='set'||x.kind==='trip'))?`<label class="gift"><input type="checkbox" id="gf"> זו מתנה, לשלוח ישר למקבל/ת</label>
+        ${(t.phys&&!pickup)?`<label class="gift"><input type="checkbox" id="gf"> זו מתנה, לשלוח ישר למקבל/ת</label>
         <div id="gbox" hidden>
           <div class="two">
             <div class="f"><label for="gn">שם המקבל/ת</label><input id="gn" autocomplete="off"></div>
@@ -498,12 +504,13 @@ function cartView(){
           <div class="f"><label for="gb">ברכה לכרטיס שבחבילה</label><textarea id="gb" rows="3" maxlength="300" placeholder="מזל טוב! באהבה, משפחת כהן"></textarea></div>
           <small>הכתובת למעלה היא הכתובת של המקבל/ת. בחבילת מתנה אין מחיר.</small>
         </div>`:''}
-        <div class="f"><label for="nt">הערות למשלוח (לא חובה)</label><textarea id="nt" rows="2"></textarea></div>
+        <div class="f"><label for="nt">${pickup&&t.phys?'הערות (לא חובה)':'הערות למשלוח (לא חובה)'}</label><textarea id="nt" rows="2"></textarea></div>
         <button class="cta" type="submit">מעבר לתשלום מאובטח</button>
         <div id="msg" class="note" hidden></div>
       </form>`:''}
     </aside>
   </section>`;
+  V.querySelectorAll('input[name=dl]').forEach(r=>r.onchange=()=>{const keep={};document.querySelectorAll('#co input:not([type=radio]):not([type=checkbox]),#co textarea').forEach(e=>keep[e.id]=e.value);pickup=r.value==='1';try{localStorage.setItem('mm-pickup',pickup?'1':'0')}catch(e){};cartView();Object.entries(keep).forEach(([k,v])=>{const e=document.getElementById(k);if(e)e.value=v})});
   V.querySelectorAll('.rm').forEach(b=>b.onclick=()=>{cart.splice(+b.dataset.i,1);save();cartView()});
   V.querySelectorAll('.qd').forEach(b=>b.onclick=()=>{const x=cart[+b.dataset.i];x.q+=+b.dataset.d;if(x.q<1)cart.splice(+b.dataset.i,1);save();cartView()});
   const f=document.getElementById('co');
@@ -559,7 +566,7 @@ function setView(){
       </div>
       <dl class="spec">
         <div><dt>בסט</dt><dd>שלושה פריטים, מוכנים להעמדה או לתלייה</dd></div>
-        <div><dt>משלוח</dt><dd>שליח עד הבית. חינם מ־2 תמונות, ולתמונה בודדת ${nis(SHIP)}</dd></div>
+        <div><dt>משלוח</dt><dd>שליח עד הבית, ${nis(SHIP)} להזמנה</dd></div>
       </dl>
     </div>
   </section>`;
@@ -607,7 +614,7 @@ function tripView(){
       </div>
       <dl class="spec">
         <div><dt>בסט</dt><dd>שלוש מסגרות עץ טבעי 20×30 עם פספרטו, הדפס 15×21 בכל אחת</dd></div>
-        <div><dt>משלוח</dt><dd>שליח עד הבית. חינם מ־2 תמונות, ולתמונה בודדת ${nis(SHIP)}</dd></div>
+        <div><dt>משלוח</dt><dd>שליח עד הבית, ${nis(SHIP)} להזמנה</dd></div>
       </dl>
     </div>
   </section>`;
@@ -641,7 +648,9 @@ shipping:{t:'משלוחים ושירות',b:`
 <p>כל הדפס מודפס וממוסגר במיוחד אחרי ההזמנה, בבית דפוס בישראל. ההזמנה מגיעה עד 5 ימי עסקים מיום התשלום, בשליח עד הבית. ימי שישי, שבתות וחגים אינם נספרים כימי עסקים.</p>
 <p>קובץ דיגיטלי (פוסטר להדפסה) נשלח למייל תוך יום עסקים אחד מהתשלום.</p>
 <h3>דמי משלוח</h3>
-<p>הדפס ממוסגר בודד: ${nis(SHIP)}. משלוח חינם מ־2 הדפסים ממוסגרים, ובכל סט.</p>
+<p>משלוח עד הבית: ${nis(SHIP)} להזמנה, בלי קשר למספר ההדפסים. קובץ דיגיטלי נשלח במייל, בלי דמי משלוח.</p>
+<h3>איסוף עצמי</h3>
+<p>אפשר לבחור בקופה איסוף עצמי בכפר סבא, בלי דמי משלוח. ניצור קשר לתיאום מקום ושעה.</p>
 <h3>אזורי משלוח</h3>
 <p>משלוחים לכל הארץ, בכפוף לאזורי החלוקה של חברת השליחויות. אם הכתובת מחוץ לאזור החלוקה, ניצור קשר לפני המשלוח.</p>
 <h3>הגיע פגום או שבור?</h3>
@@ -741,7 +750,7 @@ function sendOrder(f,m){
   const body={_subject:`ליד · הזמנה ${no} · ${nis(t.total)} · עוד לא שולם`,'סטטוס':'לקוחה פתחה הזמנה. כשהתשלום יעבור יגיע מייל "שולם". אם לא ישולם תוך 30 דקות יגיע מייל "לא שולם".',_template:'table',_captcha:'false',
     'מספר הזמנה':no,'שם':v('fn'),'טלפון':v('ph'),'מייל':v('em'),'כתובת':addr||'—',
     'מתנה':isGift?`כן · למקבל/ת: ${v('gn')} · ${v('gp')}`:'לא','ברכה לכרטיס':isGift?(v('gb')||'—'):'—',
-    'הערות':v('nt')||'—','פריטים':cart.map(itemLine).join(' | '),'משלוח':t.ship?nis(t.ship):'חינם','לתשלום':nis(t.total)};
+    'הערות':v('nt')||'—','פריטים':cart.map(itemLine).join(' | '),'משלוח':t.ship?nis(t.ship):(t.phys&&pickup?'איסוף עצמי בכפר סבא':'—'),'לתשלום':nis(t.total)};
   try{localStorage.setItem('mm-last',no)}catch(e){}
   const tfetch=(u,o,ms)=>{const c=new AbortController();const t=setTimeout(()=>c.abort(),ms);return fetch(u,Object.assign({signal:c.signal},o)).finally(()=>clearTimeout(t))};
   const mail=tfetch(ORDER_TO,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)},9000).then(r=>r.ok?r.json():{}).then(j=>!!j.ok).catch(()=>false);
