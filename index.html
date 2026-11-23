@@ -238,8 +238,11 @@ const PRICE_FRAMED=150, PAIR=289, TRIPLE=399, POSTER=39, SHIP=39; // מחיר פ
 const COLORS=[
   {id:'natural',name:'עץ טבעי',hex:'#C9A878'},
   {id:'white',name:'לבן',hex:'#F4F1EA'},
-  {id:'honey',name:'חום כהה',hex:'#7A5434'}
+  {id:'black',name:'שחור',hex:'#1E1E1E'}
 ];
+// הדפסים גרפיים שעוד אין להם מוקאפ 30×40: נשארים עם התמונות הישנות
+const OLDC=['p1','p4','p5','p11','p14'];
+const colorsOf=id=>OLDC.includes(id)?[{id:'natural',name:'עץ טבעי',hex:'#C9A878'},{id:'white',name:'לבן',hex:'#F4F1EA'},{id:'honey',name:'חום כהה',hex:'#7A5434'}]:COLORS;
 const P=[
   {id:'p1',l:'א',name:'אָעוּפָה אֶשְׁכּוֹנָה',plain:'אעופה אשכונה',sub:'עם להקת הציפורים',by:'מתוך פיוט של ר׳ יצחק אביחצירא',
    text:'הבית הראשון של הפיוט, עם להקת ציפורים שעולה אל המילים. הדפס בגווני נייר חמים שמתאים לסלון, למסדרון ולחדר עבודה.'},
@@ -254,7 +257,7 @@ const P=[
   {id:'p6',l:'ו',name:'בּוֹאִי כַלָּה',plain:'בואי כלה',sub:'לכלה · מתוך לכה דודי',by:'ר׳ שלמה הלוי אלקבץ',
    text:'"בואי כלה, בואי כלה", ומתחת "בואי בשלום עטרת בעלה". הפיוט ששרים כל ליל שבת, לכלה ביום שלה. בזוג עם ישמח חתני.',s:'joy',def:'white'},
   {id:'p7',l:'ז',name:'יִשְׂמַח חֲתָנִי',plain:'ישמח חתני',sub:'לחתן ולבר מצווה',by:'פיוט עממי',
-   text:'"ישמח חתני בקהל אמוני, ישא ברכה מאת ה׳". שרים אותו לחתן מתחת לחופה ולנער בבר המצווה. בזוג עם בואי כלה.',s:'joy',def:'honey'},
+   text:'"ישמח חתני בקהל אמוני, ישא ברכה מאת ה׳". שרים אותו לחתן מתחת לחופה ולנער בבר המצווה. בזוג עם בואי כלה.',s:'joy',def:'black'},
   {id:'p8',l:'ח',name:'אִם נִנְעֲלוּ',plain:'אם ננעלו',sub:'דלתי מרום לא ננעלו',by:'מתוך שיר של ר׳ שלום שבזי',
    text:'"אם ננעלו דלתי נדיבים, דלתי מרום לא ננעלו". שירו של ר׳ שלום שבזי, גדול משוררי תימן: גם כשדלתות נסגרות, יש דלת שתמיד פתוחה. מתנה לבית חדש, לעסק חדש או למי שצריך חיזוק.'},
   {id:'p9',l:'ט',name:'כִּי אֶשְׁמְרָה שַׁבָּת',plain:'כי אשמרה שבת',sub:'לשולחן השבת',by:'ר׳ אברהם אבן עזרא',
@@ -270,7 +273,7 @@ const P=[
   {id:'p15',l:'טו',name:'קוֹל שָׂשׂוֹן',plain:'קול ששון',sub:'לחתונה · קול חתן וקול כלה',by:'ירמיהו לג, יא',
    text:'"קול ששון וקול שמחה, קול חתן וקול כלה". הפסוק משבע הברכות, שנשמע מתחת לחופה. יחד עם בואי כלה וישמח חתני זה טריפטיך לבית החדש.',s:'joy'},
   {id:'p16',l:'טז',name:'מַבְרוּק לְעְרוּס',plain:'מברוק לערוס',sub:'לחינה · לחתן',by:'מהחינה המרוקאית',
-   text:'"מברוק לערוס", מזל טוב לחתן. הברכה שנשמעת בחינה המרוקאית בין הזגרוטות. בזוג עם לאלה לערוסה.',s:'joy',def:'honey'},
+   text:'"מברוק לערוס", מזל טוב לחתן. הברכה שנשמעת בחינה המרוקאית בין הזגרוטות. בזוג עם לאלה לערוסה.',s:'joy',def:'black'},
   {id:'p17',l:'יז',name:'לָאלָּה לְעְרוּסָה',plain:'לאלה לערוסה',sub:'לחינה · לכלה',by:'מהחינה המרוקאית',
    text:'"לאלה לערוסה", גבירתי הכלה. כך פונים לכלה בשירי החינה המרוקאית. בזוג עם מברוק לערוס.',s:'joy',def:'white'},
   {id:'p18',l:'יח',name:'נְעַ׳בִּיבַּשְׁק',plain:'נעביבשק',sub:'מרוקאית · אקח את כאבך',by:'שפות מהבית',
@@ -292,7 +295,7 @@ const P=[
   {id:'p26',l:'כו',name:'לְהִיבָּא',plain:'להיבא',sub:'מרוקאית · הדר, כבוד',by:'שפות מהבית',
    text:'ההדר והכבוד שיש למישהו, מה שמרגישים כשהוא נכנס לחדר.',s:'lang'}
 ];
-const IMGV=1121;
+const IMGV=1123;
 const img=(id,c)=>`img/${id}-${c}.jpg?v=${IMGV}`;
 // צבע + צבע
 const SET_PRICE={a:449,b:549,sq:449}; // לעדכון
@@ -340,7 +343,7 @@ function shop(){
       <h2 class="disp" style="font-size:clamp(28px,3.4vw,40px);line-height:1.15">פיוטים, שירים ומילים של הבית, ממוסגרים לקיר</h2>
       <p>שורות מהפיוטים והשירים שליוו את הבתים שלנו, בעיצוב נקי ובאות עברית מסורתית. כל הדפס מגיע ממוסגר עם פספרטו, מוכן לתלייה.</p>
       <a class="cta" href="#prints">בוחרים 2 או 3 הדפסים</a>
-      <div class="facts"><span>זכוכית ופספרטו</span><span>מסגרת 20×30 ס״מ</span><span>משלוח חינם מ־2 תמונות</span></div>
+      <div class="facts"><span>זכוכית ופספרטו</span><span>מסגרת 30×40 ס״מ</span><span>משלוח חינם מ־2 תמונות</span></div>
     </div>
     <a href="#trip"><img src="img/trip.webp" alt="טריפטיך ממוסגר: אעופה אשכונה, צללית ילד ושמח בני" style="aspect-ratio:auto"></a>
   </section>
@@ -393,7 +396,7 @@ function product(p){
   <section class="wrap pp">
     <div>
       <div class="main"><a id="zoomlink" href="${img(p.id,color)}" target="_blank" rel="noopener" aria-label="תמונה בגודל מלא"><img id="mainimg" src="${img(p.id,color)}" alt=""></a></div>
-      <div class="thumbs">${COLORS.map(c=>`<button type="button" data-c="${c.id}" aria-label="מסגרת ${c.name}"><img src="${img(p.id,c.id)}" alt=""></button>`).join('')}</div>
+      <div class="thumbs">${colorsOf(p.id).map(c=>`<button type="button" data-c="${c.id}" aria-label="מסגרת ${c.name}"><img src="${img(p.id,c.id)}" alt=""></button>`).join('')}</div>
       <a class="back" href="#shop">חזרה לכל ההדפסים</a>
     </div>
     <div>
@@ -407,7 +410,7 @@ function product(p){
         </div>
       </fieldset>
       <fieldset class="opt" id="colorset"><legend>צבע מסגרת</legend>
-        <div class="swatches">${COLORS.map(c=>`<button type="button" class="sw" data-c="${c.id}"><i style="background:${c.hex}"></i>${c.name}</button>`).join('')}</div>
+        <div class="swatches">${colorsOf(p.id).map(c=>`<button type="button" class="sw" data-c="${c.id}"><i style="background:${c.hex}"></i>${c.name}</button>`).join('')}</div>
       </fieldset>
       <div class="row">
         <div class="qty"><button type="button" id="minus" aria-label="פחות">−</button><output id="q">1</output><button type="button" id="plus" aria-label="עוד">+</button></div>
@@ -427,8 +430,8 @@ function product(p){
     V.querySelectorAll('[data-c]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.c===color));
     document.getElementById('colorset').hidden=kind!=='framed';
     const m=document.getElementById('mainimg');m.src=img(p.id,color);document.getElementById('zoomlink').href=img(p.id,color);
-    m.alt=`${p.plain} במסגרת ${COLORS.find(c=>c.id===color).name}`;
-    const bl=color==='black';document.getElementById('sp-print').textContent=bl?'20×30 ס״מ, ממלא את כל המסגרת':'15×21 ס״מ';document.getElementById('sp-frame').textContent=bl?'עץ שחור 20×30 ס״מ, עם זכוכית, בלי פספרטו':'עץ 20×30 ס״מ, עם זכוכית ופספרטו לבן';
+    m.alt=`${p.plain} במסגרת ${colorsOf(p.id).find(c=>c.id===color).name}`;
+    const old=OLDC.includes(p.id);document.getElementById('sp-print').textContent=old?'15×21 ס״מ':'A4 (21×29.7 ס״מ)';document.getElementById('sp-frame').textContent=old?'עץ 20×30 ס״מ, עם זכוכית ופספרטו לבן':'עץ 30×40 ס״מ, עם זכוכית ופספרטו לבן';
     document.getElementById('q').textContent=q;
   };
   V.querySelectorAll('.choice').forEach(b=>b.onclick=()=>{kind=b.dataset.k;sync()});
@@ -464,7 +467,7 @@ function cartView(){
         <div class="line">
           <img src="${img(p.id,x.color||'white')}" alt="">
           <div><div class="n">${p.name}</div>
-            <div class="m">${x.kind==='framed'?'ממוסגר · '+COLORS.find(c=>c.id===x.color).name:'פוסטר להדפסה (קובץ)'}</div></div>
+            <div class="m">${x.kind==='framed'?'ממוסגר · '+(colorsOf(x.id||'').concat(COLORS).find(c=>c.id===x.color)||{name:''}).name:'פוסטר להדפסה (קובץ)'}</div></div>
           <div class="r"><span>${nis((x.kind==='framed'?PRICE_FRAMED:POSTER)*x.q)}</span><span class="qs"><button type="button" class="qd" data-i="${i}" data-d="-1" aria-label="פחות">−</button><b>${x.q}</b><button type="button" class="qd" data-i="${i}" data-d="1" aria-label="עוד">+</button></span><button class="rm" type="button" data-i="${i}">הסרה</button></div>
         </div>`}).join(''):`<div class="empty">העגלה ריקה. <a href="#prints">לכל ההדפסים</a></div>`}
     </div>
@@ -623,7 +626,7 @@ function about(){
       <p>נעביבשק מביא לקיר את המילים ששמענו בבית: שורות מפיוטים, משירי סבתא ומהשפות שהגיעו איתנו. כל טקסט נבדק מול מקור, עם ניקוד מלא וקרדיט למחבר.</p>
       <p>ההדפסים מודפסים וממוסגרים בישראל, ונשלחים עם שליח עד הבית.</p>
       <div class="faq">
-        <details><summary>מה גודל ההדפס?</summary><p>ההדפס 15×21 ס״מ, בתוך מסגרת עץ 20×30 עם פספרטו לבן.</p></details>
+        <details><summary>מה גודל ההדפס?</summary><p>ההדפס בגודל A4, בתוך מסגרת עץ 30×40 עם פספרטו לבן וזכוכית.</p></details>
         <details><summary>איך עובד הפוסטר להדפסה?</summary><p>אחרי התשלום מקבלים קובץ באיכות גבוהה בגדלים A4 ו־A3, ומדפיסים בכל מקום.</p></details>
         <details><summary>אפשר להזמין כמתנה?</summary><p>כן. כתבו בהערות למשלוח לאן לשלוח ואם להוסיף ברכה.</p></details>
       </div>
@@ -713,7 +716,7 @@ function itemLine(x){
   if(x.kind==='trip')return `טריפטיך אעופה · הילד · שמח בני · כמות ${x.q}`;
   if(x.kind==='set')return `צבע + צבע: ${WORDS[x.w1].w} (${PRIM[x.c1].n}) · קיבוץ גלויות · ${WORDS[x.w2].w} (${PRIM[x.c2].n}) · ${SIZES[x.size].n} · כמות ${x.q}`;
   const p=P.find(y=>y.id===x.id);
-  return `${p.plain} · ${x.kind==='framed'?'ממוסגר, מסגרת '+COLORS.find(c=>c.id===x.color).name:'פוסטר להדפסה (קובץ)'} · כמות ${x.q}`;
+  return `${p.plain} · ${x.kind==='framed'?'ממוסגר, מסגרת '+(colorsOf(x.id||'').concat(COLORS).find(c=>c.id===x.color)||{name:''}).name:'פוסטר להדפסה (קובץ)'} · כמות ${x.q}`;
 }
 const WORKER='https://mm-pay.fanny-ra.workers.dev';  // כתובת ה-Worker ב-Cloudflare, למשל https://mm-pay.xxx.workers.dev
 function payModal(no,url,note){
