@@ -37,9 +37,6 @@
   --body:'Assistant',sans-serif;
   color-scheme:light;
 }
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --paper:#0B1A3A; --wall:#102654; --ink:#F3F7F8; --ink-soft:#B3C3E6; --sand:#F5A25E;
-  --line:rgba(243,247,248,.15); --card:#13295A; --accent:#7FA2EC; --ok:#7FCB98; color-scheme:dark}}
 :root[data-theme="dark"]{
   --paper:#0B1A3A; --wall:#102654; --ink:#F3F7F8; --ink-soft:#B3C3E6; --sand:#F5A25E;
   --line:rgba(243,247,248,.15); --card:#13295A; --accent:#7FA2EC; --ok:#7FCB98; color-scheme:dark}
@@ -73,7 +70,7 @@ nav a:hover{color:var(--ink)}
 .hero img{width:100%;aspect-ratio:1;object-fit:cover;display:block}
 .cta{display:inline-block;background:var(--accent);color:#fff;text-decoration:none;padding:12px 26px;border-radius:2px;border:0;font-size:16px;letter-spacing:.3px}
 .cta.ghost{background:none;color:var(--ink);border:1px solid var(--ink)}
-:root[data-theme="dark"] .cta:not(.ghost){color:var(--paper)}@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .cta:not(.ghost){color:var(--paper)}}
+:root[data-theme="dark"] .cta:not(.ghost){color:var(--paper)}
 .facts{display:flex;flex-wrap:wrap;gap:8px 26px;margin-top:30px;font-size:14px;color:var(--ink-soft)}
 .facts span::before{content:"·";margin-left:8px;color:var(--sand)}
 
@@ -107,6 +104,8 @@ nav a:hover{color:var(--ink)}
 @media (min-width:861px){#prints .item[href='#p8']{order:1}#prints .item[href='#p2'],#prints .item[href='#p4'],#prints .item[href='#p9']{order:2}}
 .item{text-decoration:none;display:flex;flex-direction:column;gap:12px}
 .item .ph{overflow:hidden}
+.fc{position:relative;overflow:hidden;aspect-ratio:809/1046;display:block}
+.fc img{position:absolute;width:123.61%!important;max-width:none;height:auto!important;aspect-ratio:auto!important;left:-11.87%;top:-10.9%;object-fit:fill!important}
 .item img{width:100%;aspect-ratio:832/1171;object-fit:cover;display:block;transition:transform .5s ease}
 .item:hover img{transform:scale(1.03)}
 .item h3{font-size:28px;line-height:1.2}
@@ -417,7 +416,7 @@ function shop(){
 }
 const card=p=>`
       <a class="item" href="#${p.id}">
-        <div class="ph"><img loading="lazy" src="${img(p.id,p.def||'natural')}" alt="${p.plain} ממוסגר"></div>
+        <div class="ph fc"><img loading="lazy" src="${img(p.id,p.def||'natural')}" alt="${p.plain} ממוסגר"></div>
         <h3>${p.name}</h3>
         <div class="sub">${p.sub}</div>
         <div class="pr"><span>${nis(PRICE_FRAMED)}</span><span class="go">לבחירה ←</span></div>
@@ -428,8 +427,8 @@ function product(p){
   V.innerHTML=`
   <section class="wrap pp">
     <div>
-      <div class="main"><a id="zoomlink" href="${img(p.id,color)}" target="_blank" rel="noopener" aria-label="תמונה בגודל מלא"><img id="mainimg" src="${img(p.id,color)}" alt=""></a></div>
-      <div class="thumbs">${colorsOf(p.id).map(c=>`<button type="button" data-c="${c.id}" aria-label="מסגרת ${c.name}"><img src="${img(p.id,c.id)}" alt=""></button>`).join('')}</div>
+      <div class="main"><a id="zoomlink" class="fc" href="${img(p.id,color)}" target="_blank" rel="noopener" aria-label="תמונה בגודל מלא"><img id="mainimg" src="${img(p.id,color)}" alt=""></a></div>
+      <div class="thumbs">${colorsOf(p.id).map(c=>`<button type="button" data-c="${c.id}" aria-label="מסגרת ${c.name}"><span class="fc"><img src="${img(p.id,c.id)}" alt=""></span></button>`).join('')}</div>
       <a class="back" href="#shop">חזרה לכל ההדפסים</a>
     </div>
     <div>
@@ -498,7 +497,7 @@ function cartView(){
           <div class="r"><span>${nis(SET_PRICE[x.size]*x.q)}</span><span class="qs"><button type="button" class="qd" data-i="${i}" data-d="-1" aria-label="פחות">−</button><b>${x.q}</b><button type="button" class="qd" data-i="${i}" data-d="1" aria-label="עוד">+</button></span><button class="rm" type="button" data-i="${i}">הסרה</button></div>
         </div>`}const p=P.find(y=>y.id===x.id);return`
         <div class="line">
-          <img src="${img(p.id,x.color||'white')}" alt="">
+          <span class="fc" style="width:84px"><img src="${img(p.id,x.color||'white')}" alt=""></span>
           <div><div class="n">${p.name}</div>
             <div class="m">${x.kind==='framed'?'ממוסגר · '+(colorsOf(x.id||'').concat(COLORS).find(c=>c.id===x.color)||{name:''}).name:'פוסטר להדפסה (קובץ)'}</div></div>
           <div class="r"><span>${nis((x.kind==='framed'?PRICE_FRAMED:POSTER)*x.q)}</span><span class="qs"><button type="button" class="qd" data-i="${i}" data-d="-1" aria-label="פחות">−</button><b>${x.q}</b><button type="button" class="qd" data-i="${i}" data-d="1" aria-label="עוד">+</button></span><button class="rm" type="button" data-i="${i}">הסרה</button></div>
