@@ -300,7 +300,13 @@ const P=[
   {id:'p20',l:'כ',name:'בְּזָעַת',plain:'בזעת',sub:'מרוקאית · נו, הלאה',by:'שפות מהבית',
    text:'כשנגמרה הסבלנות. בזוג עם שוין, "נו, הלאה" ביידיש.',s:'lang'},
   {id:'p26',l:'כו',name:'לְהִיבָּא',plain:'להיבא',sub:'מרוקאית · הדר, כבוד',by:'שפות מהבית',
-   text:'ההדר והכבוד שיש למישהו, מה שמרגישים כשהוא נכנס לחדר.',s:'lang'}
+   text:'ההדר והכבוד שיש למישהו, מה שמרגישים כשהוא נכנס לחדר.',s:'lang'},
+  {id:'p28',l:'כח',name:'תְּבָארְכְּלָה',plain:'תבארכלה',sub:'מרוקאית · בלי עין הרע',by:'שפות מהבית',
+   text:'מה שאומרים על כל דבר טוב, כדי לשמור עליו. לבית חדש, לתינוק, לכל שמחה.',s:'lang'},
+  {id:'p29',l:'כט',name:'סָאפִּיי',plain:'סאפיי',sub:'מרוקאית · די, מספיק, חלאס',by:'שפות מהבית',
+   text:'מילה אחת שסוגרת כל ויכוח בבית. די, מספיק, חלאס.',s:'lang'},
+  {id:'p30',l:'ל',name:'בָּרוּךְ הַבָּא בִּיק',plain:'ברוך הבא ביק',sub:'מרוקאית · ברוך הבא',by:'שפות מהבית',
+   text:'ברכת הכניסה של הבית המרוקאי. לדלת הכניסה, למבואה, לבית חדש.',s:'lang'}
 ];
 const IMGV=1126;
 const img=(id,c)=>`img/${id}-${c}.jpg?v=${IMGV}`;
@@ -369,7 +375,7 @@ function shop(){
   <section class="wrap sec" id="moroccan" style="padding-top:40px">
     <div class="sec-h"><h2>קולקציה מרוקאית</h2><p>מילים, פיוטים ושירי חינה מהבית המרוקאי</p></div>
     <img class="banner" src="img/sec-moroccan.jpg" alt="מגש נחושת מרוקאי עם ורדים מיובשים ועשבי תיבול" loading="lazy" style="object-position:center 45%">
-    <div class="grid">${['p18','p19','p20','p26','p2','p4','p3','p16','p17'].map(i=>P.find(p=>p.id===i)).map(card).join('')}</div>
+    <div class="grid">${['p18','p19','p20','p26','p28','p29','p30','p2','p4','p3','p16','p17'].map(i=>P.find(p=>p.id===i)).map(card).join('')}</div>
   </section>
   <section class="wrap sec" id="lang" style="padding-top:0">
     <div class="sec-h"><h2>שפות מהבית</h2><p>מילה אחת מכל בית, בצבעים</p></div>
