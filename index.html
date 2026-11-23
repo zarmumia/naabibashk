@@ -115,7 +115,6 @@ nav a:hover{color:var(--ink)}
 .sec-h h2{font-size:clamp(30px,4vw,44px)}
 .sec-h p{margin:0;color:var(--ink-soft)}
 .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:40px 28px}
-@media (min-width:861px){#prints .item[href='#p8']{order:1}#prints .item[href='#p2'],#prints .item[href='#p4'],#prints .item[href='#p9']{order:2}}
 .item{text-decoration:none;display:flex;flex-direction:column;gap:12px}
 .item .ph{overflow:hidden}
 .fc{position:relative;overflow:hidden;aspect-ratio:809/1046;display:block;box-shadow:0 0 0 1px rgba(60,45,30,.10),0 2px 4px rgba(60,45,30,.10),0 10px 22px -6px rgba(60,45,30,.22)}
@@ -371,6 +370,9 @@ function toast(t,cartLink){document.querySelectorAll('.toast').forEach(x=>x.remo
 
 const V=document.getElementById('view');
 
+// כל הדפס מופיע פעם אחת בדף הבית
+const MOR=['p18','p19','p20','p26','p28','p29','p30','p2','p4','p3','p16','p17']; // קולקציה מרוקאית: מילים, פיוטים וחינה
+const SHAB=['p9','p8','p27','p12','p13'];                                          // שבת ופיוטים
 function shop(){
   V.innerHTML=`
   <section class="bhero">
@@ -407,29 +409,30 @@ function shop(){
       <p>השפה שלה, השפה שלו, ובאמצע קיבוץ גלויות בצבע שנולד משניהם. בוחרים שתי מילים מהבית ושני צבעים, והצבע השלישי מתערבב לבד.</p>
       <span class="cta">לבניית הסט</span></div>
   </a>`:''}
+  <div id="prints">
   <section class="wrap sec" id="moroccan" style="padding-top:40px">
     <div class="sec-h"><h2>קולקציה מרוקאית</h2><p>מילים, פיוטים ושירי חינה מהבית המרוקאי</p></div>
     <img class="banner" src="img/sec-moroccan.jpg" alt="מגש נחושת מרוקאי עם ורדים מיובשים ועשבי תיבול" loading="lazy" style="object-position:center 45%">
-    <div class="grid">${['p18','p19','p20','p26','p28','p29','p30','p2','p4','p3','p16','p17'].map(i=>P.find(p=>p.id===i)).map(card).join('')}</div>
+    <div class="grid">${MOR.map(i=>P.find(p=>p.id===i)).map(card).join('')}</div>
   </section>
   <section class="wrap sec" id="lang" style="padding-top:0">
-    <div class="sec-h"><h2>שפות מהבית</h2><p>מילה אחת מכל בית, בצבעים</p></div>
-    <div class="grid">${P.filter(p=>p.s==='lang').map(card).join('')}</div>
+    <div class="sec-h"><h2>שפות מהבית</h2><p>תימנית, יידיש, פרסית ועיראקית · מילה אחת מכל בית</p></div>
+    <div class="grid">${P.filter(p=>p.s==='lang'&&!MOR.includes(p.id)).map(card).join('')}</div>
   </section>
-  <section class="wrap sec" id="prints">
-    <div class="sec-h"><h2>שולחן השבת ופיוטים</h2><p>זמירות, פיוטים ושירים מהבית</p></div>
+  <section class="wrap sec" id="shabbat">
+    <div class="sec-h"><h2>שולחן השבת ופיוטים</h2><p>זמירות, פיוטים וברכת הילדים לליל שבת</p></div>
     <img class="banner" src="img/sec-shabbat.jpg?v=3" alt="שולחן שבת מרוקאי ערוך: מטבוחה, זעלוק, סלט גזר מבושל, פלפלים חריפים וזיתים, חלה מתחת לכיסוי שבת, גביע קידוש ונרות" loading="lazy" style="object-position:center 50%">
-    <div class="grid">${['p3','p2','p4','p8','p9'].map(i=>P.find(p=>p.id===i)).concat(P.filter(p=>!p.s&&!['p3','p2','p4','p8','p9'].includes(p.id))).map(card).join('')}</div>
+    <div class="grid">${SHAB.map(i=>P.find(p=>p.id===i)).map(card).join('')}</div>
   </section>
   <section class="wrap sec" id="joy" style="padding-top:0">
-    <div class="sec-h"><h2>סדרת השמחות</h2><p>חתונה · חינה · זוג ${nis(PAIR)}</p></div>
-    <img src="img/wedding.jpg?v=1129" alt="בואי כלה במסגרת לבנה, קול ששון בעץ טבעי וישמח חתני במסגרת שחורה" style="width:100%;display:block;margin-bottom:28px">
-    <div class="grid">${P.filter(p=>p.s==='joy').map(card).join('')}</div>
+    <div class="sec-h"><h2>סדרת השמחות</h2><p>לכלה, לחתן ולחתונה · זוג ${nis(PAIR)}</p></div>
+    <div class="grid">${P.filter(p=>p.s==='joy'&&!MOR.includes(p.id)).map(card).join('')}</div>
   </section>
   <section class="wrap sec" id="kids" style="padding-top:0">
     <div class="sec-h"><h2>לילדים</h2><p>לחדר ילדים · מתנת לידה · בר מצווה</p></div>
-    <div class="grid">${P.filter(p=>p.s==='kids').map(card).join('')}</div>
-  </section>`;
+    <div class="grid">${P.filter(p=>p.s==='kids'&&!SHAB.includes(p.id)).map(card).join('')}</div>
+  </section>
+  </div>`;
 }
 const card=p=>`
       <a class="item" href="#${p.id}">
