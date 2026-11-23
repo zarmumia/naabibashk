@@ -306,6 +306,9 @@ const P=[
 ];
 const IMGV=1125;
 const img=(id,c)=>`img/${id}-${c}.jpg?v=${IMGV}`;
+// מוקאפ על הקיר (30×40), תמונה נוספת בדף המוצר
+const WALL=['p2','p3','p4','p5','p6','p7','p8','p9','p11','p12','p13','p14','p15','p16','p17','p18','p19','p20','p21','p22','p23','p24','p25','p26','p27'];
+const wallImg=id=>`img/${id}-wall.jpg?v=${IMGV}`;
 // צבע + צבע
 const SET_PRICE={a:449,b:549,sq:449}; // לעדכון
 const WORDS=[{w:'נעביבשק',lang:'מרוקאית',cap:'אקח את כאבך'},{w:'מענטש',lang:'יידיש',cap:'גבר גבר'},{w:'דיאלנא',lang:'מרוקאית',cap:'משלנו'},{w:'מִן חַקְּנָא',lang:'תימנית',cap:'משלנו'},{w:'בזעת',lang:'מרוקאית',cap:'נו, הלאה'},{w:'שוין',lang:'יידיש',cap:'נו, הלאה'}];
@@ -401,12 +404,12 @@ const card=p=>`
       </a>`;
 
 function product(p){
-  let kind='framed',color=p.def||'natural',q=1;
+  let kind='framed',color=p.def||'natural',q=1,wall=false;
   V.innerHTML=`
   <section class="wrap pp">
     <div>
       <div class="main"><a id="zoomlink" href="${img(p.id,color)}" target="_blank" rel="noopener" aria-label="תמונה בגודל מלא"><img id="mainimg" src="${img(p.id,color)}" alt=""></a></div>
-      <div class="thumbs">${colorsOf(p.id).map(c=>`<button type="button" data-c="${c.id}" aria-label="מסגרת ${c.name}"><img src="${img(p.id,c.id)}" alt=""></button>`).join('')}</div>
+      <div class="thumbs">${colorsOf(p.id).map(c=>`<button type="button" data-c="${c.id}" aria-label="מסגרת ${c.name}"><img src="${img(p.id,c.id)}" alt=""></button>`).join('')}${WALL.includes(p.id)?`<button type="button" data-v="wall" aria-label="על הקיר"><img src="${wallImg(p.id)}" alt=""></button>`:''}</div>
       <a class="back" href="#shop">חזרה לכל ההדפסים</a>
     </div>
     <div>
@@ -437,15 +440,17 @@ function product(p){
   </section>`;
   const sync=()=>{
     V.querySelectorAll('.choice').forEach(b=>b.setAttribute('aria-pressed',b.dataset.k===kind));
-    V.querySelectorAll('[data-c]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.c===color));
+    V.querySelectorAll('[data-c]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.c===color&&!(wall&&b.closest('.thumbs'))));
+    V.querySelectorAll('[data-v]').forEach(b=>b.setAttribute('aria-pressed',wall));
     document.getElementById('colorset').hidden=kind!=='framed';
-    const m=document.getElementById('mainimg');m.src=img(p.id,color);document.getElementById('zoomlink').href=img(p.id,color);
-    m.alt=`${p.plain} במסגרת ${colorsOf(p.id).find(c=>c.id===color).name}`;
+    const m=document.getElementById('mainimg'),src=wall?wallImg(p.id):img(p.id,color);m.src=src;document.getElementById('zoomlink').href=src;
+    m.alt=wall?`${p.plain} ממוסגר על הקיר`:`${p.plain} במסגרת ${colorsOf(p.id).find(c=>c.id===color).name}`;
     const old=OLDC.includes(p.id);document.getElementById('sp-print').textContent=old?'15×21 ס״מ':'A4 (21×29.7 ס״מ)';document.getElementById('sp-frame').textContent=old?'עץ 20×30 ס״מ, עם זכוכית ופספרטו לבן':'עץ 30×40 ס״מ (34×44 עם המסגרת), חזית 2 ס״מ, זכוכית ופספרטו לבן';
     document.getElementById('q').textContent=q;
   };
   V.querySelectorAll('.choice').forEach(b=>b.onclick=()=>{kind=b.dataset.k;sync()});
-  V.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{color=b.dataset.c;sync()});
+  V.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{color=b.dataset.c;wall=false;sync()});
+  V.querySelectorAll('[data-v]').forEach(b=>b.onclick=()=>{wall=true;sync()});
   document.getElementById('minus').onclick=()=>{q=Math.max(1,q-1);sync()};
   document.getElementById('plus').onclick=()=>{q=Math.min(9,q+1);sync()};
   document.getElementById('add').onclick=()=>{
