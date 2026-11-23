@@ -318,8 +318,11 @@ const MIX={yb:{n:'ירוק',c:'#3A7046'},yr:{n:'כתום',c:'#CC6828'},br:{n:'ס
 const mixOf=(a,b)=>a===b?PRIM[a]:MIX[[a,b].sort((x,y)=>'ybr'.indexOf(x)-'ybr'.indexOf(y)).join('')];
 const SIZES={a:{n:'13×18 · אמצע 15×21',side:[130,180],mid:[150,210]},b:{n:'15×21 · אמצע 20×30',side:[150,210],mid:[200,300]},sq:{n:'מסגרות לבנות 20×20',side:[170,170],mid:[170,170]}};
 const nis=n=>'₪'+n.toLocaleString('he-IL');
+// צבע + צבע גנוז עד שיימצא ספק לבלוקי העץ. להחזרה: SET_ON=true
+const SET_ON=false;
 let cart=[];
 try{cart=JSON.parse(localStorage.getItem('mm-cart')||'[]')}catch(e){cart=[]}
+if(!SET_ON)cart=cart.filter(x=>x.kind!=='set');
 const save=()=>{try{localStorage.setItem('mm-cart',JSON.stringify(cart))}catch(e){};updCount()};
 const updCount=()=>{document.getElementById('count').textContent=cart.reduce((a,b)=>a+b.q,0)};
 
@@ -366,12 +369,12 @@ function shop(){
     <div class="d"><span class="dn">2 הדפסים</span><b>${nis(PAIR)}</b><span class="ds">+ משלוח</span></div>
     <div class="d"><span class="dn">3 הדפסים</span><b>${nis(TRIPLE)}</b><span class="ds">+ משלוח</span></div>
   </div><div class="all">משלבים כל הדפס שרוצים, בכל צבע מסגרת</div></div>
-  <a class="wrap feature" href="#set">
+  ${SET_ON?`<a class="wrap feature" href="#set">
     <img src="img/set.jpg" alt="שלושה בלוקי עץ: מענטש בצהוב, קיבוץ גלויות בירוק ונעביבשק בכחול">
     <div><div class="k">חדש · סט לזוג</div><h2>צבע + צבע</h2>
       <p>השפה שלה, השפה שלו, ובאמצע קיבוץ גלויות בצבע שנולד משניהם. בוחרים שתי מילים מהבית ושני צבעים, והצבע השלישי מתערבב לבד.</p>
       <span class="cta">לבניית הסט</span></div>
-  </a>
+  </a>`:''}
   <section class="wrap sec" id="moroccan" style="padding-top:40px">
     <div class="sec-h"><h2>קולקציה מרוקאית</h2><p>מילים, פיוטים ושירי חינה מהבית המרוקאי</p></div>
     <img class="banner" src="img/sec-moroccan.jpg" alt="מגש נחושת מרוקאי עם ורדים מיובשים ועשבי תיבול" loading="lazy" style="object-position:center 45%">
@@ -796,7 +799,7 @@ function thanks(){
 function route(){
   const h=location.hash.slice(1);
   const p=P.find(x=>x.id===h);
-  if(p)product(p);else if(h==='trip')tripView();else if(h==='set')setView();else if(h==='cart')cartView();else if(h==='about')about();else if(LEGAL[h])legal(h);else if(h==='thanks')thanks();else if(h==='test'){cart.length=0;cart.push({key:'test',kind:'test',q:1});save();location.hash='cart';return}else{shop();if(h==='prints'||h==='moroccan')document.getElementById(h).scrollIntoView()}
+  if(p)product(p);else if(h==='trip')tripView();else if(h==='set'&&SET_ON)setView();else if(h==='cart')cartView();else if(h==='about')about();else if(LEGAL[h])legal(h);else if(h==='thanks')thanks();else if(h==='test'){cart.length=0;cart.push({key:'test',kind:'test',q:1});save();location.hash='cart';return}else{shop();if(h==='prints'||h==='moroccan')document.getElementById(h).scrollIntoView()}
   if(!(h==='prints'||h==='moroccan'))window.scrollTo(0,0);
 }
 document.getElementById('cartbtn').onclick=()=>{location.hash='cart'};
