@@ -295,7 +295,7 @@ const P=[
   {id:'p26',l:'כו',name:'לְהִיבָּא',plain:'להיבא',sub:'מרוקאית · הדר, כבוד',by:'שפות מהבית',
    text:'ההדר והכבוד שיש למישהו, מה שמרגישים כשהוא נכנס לחדר.',s:'lang'}
 ];
-const IMGV=1123;
+const IMGV=1124;
 const img=(id,c)=>`img/${id}-${c}.jpg?v=${IMGV}`;
 // צבע + צבע
 const SET_PRICE={a:449,b:549,sq:449}; // לעדכון
@@ -432,7 +432,7 @@ function product(p){
     document.getElementById('colorset').hidden=kind!=='framed';
     const m=document.getElementById('mainimg');m.src=img(p.id,color);document.getElementById('zoomlink').href=img(p.id,color);
     m.alt=`${p.plain} במסגרת ${colorsOf(p.id).find(c=>c.id===color).name}`;
-    const old=OLDC.includes(p.id);document.getElementById('sp-print').textContent=old?'15×21 ס״מ':'A4 (21×29.7 ס״מ)';document.getElementById('sp-frame').textContent=old?'עץ 20×30 ס״מ, עם זכוכית ופספרטו לבן':'עץ 30×40 ס״מ, עם זכוכית ופספרטו לבן';
+    const old=OLDC.includes(p.id);document.getElementById('sp-print').textContent=old?'15×21 ס״מ':'A4 (21×29.7 ס״מ)';document.getElementById('sp-frame').textContent=old?'עץ 20×30 ס״מ, עם זכוכית ופספרטו לבן':'עץ 30×40 ס״מ (34×44 עם המסגרת), חזית 2 ס״מ, זכוכית ופספרטו לבן';
     document.getElementById('q').textContent=q;
   };
   V.querySelectorAll('.choice').forEach(b=>b.onclick=()=>{kind=b.dataset.k;sync()});
