@@ -351,6 +351,7 @@ let cart=[];
 try{cart=JSON.parse(localStorage.getItem('mm-cart')||'[]')}catch(e){cart=[]}
 if(!SET_ON)cart=cart.filter(x=>x.kind!=='set');
 if(!TRIP_ON)cart=cart.filter(x=>x.kind!=='trip');
+cart=cart.filter(x=>x.kind!=='test'); // מוצר הבדיקה ב־5 ₪ הוסר אחרי שהסליקה נבדקה
 const save=()=>{try{localStorage.setItem('mm-cart',JSON.stringify(cart))}catch(e){};updCount()};
 const updCount=()=>{document.getElementById('count').textContent=cart.reduce((a,b)=>a+b.q,0)};
 
@@ -771,7 +772,7 @@ function legal(k){
 // הזמנות: ליד נשלח למייל דרך ה-Worker, ואז תשלום בתוך הדף
 const ORDER_TO='https://mm-pay.fanny-ra.workers.dev/lead';
 const PB='https://www.paperless.tax/invoice?sID=3wR0dOAkWQg6lDf1w-95K';
-const PAYLINKS={5:PB+'W9TybJKAzqSdysLLeWGFlQmJ2RISmykMA', /* בדיקה זמנית */ 189:PB+'RWRxP7Vjt7RnkPKu5L0cISoEtLkn2DkvA',289:PB+'TCfD9kwUJMnMvjmjm-kq2JlfGCX76bmnQ',399:PB+'XE7R6WUx9eMMJN0TEHzitHEvVV-7L7_lw',
+const PAYLINKS={189:PB+'RWRxP7Vjt7RnkPKu5L0cISoEtLkn2DkvA',289:PB+'TCfD9kwUJMnMvjmjm-kq2JlfGCX76bmnQ',399:PB+'XE7R6WUx9eMMJN0TEHzitHEvVV-7L7_lw',
   39:PB+'Yf8Za3RxxsZDALDmg3v94Y8Yc-GyLR5Cw',449:PB+'bA-4DPV9gVv5TVZCEcyffTIzpwcWdCSgQ',549:PB+'QJqP57OolLMn7yZHHJpm5mCRwB_kI_DfQ'}; // עמודי מכירה בפייפרלס לפי סכום
 function itemLine(x){
   if(x.kind==='test')return 'מוצר בדיקה ₪5';
@@ -836,7 +837,7 @@ function thanks(){
 function route(){
   const h=location.hash.slice(1);
   const p=P.find(x=>x.id===h);
-  if(p)product(p);else if(h==='trip'&&TRIP_ON)tripView();else if(h==='set'&&SET_ON)setView();else if(h==='cart')cartView();else if(h==='about')about();else if(LEGAL[h])legal(h);else if(h==='thanks')thanks();else if(h==='test'){cart.length=0;cart.push({key:'test',kind:'test',q:1});save();location.hash='cart';return}else{shop();if(h==='prints'||h==='moroccan')document.getElementById(h).scrollIntoView()}
+  if(p)product(p);else if(h==='trip'&&TRIP_ON)tripView();else if(h==='set'&&SET_ON)setView();else if(h==='cart')cartView();else if(h==='about')about();else if(LEGAL[h])legal(h);else if(h==='thanks')thanks();else{shop();if(h==='prints'||h==='moroccan')document.getElementById(h).scrollIntoView()}
   if(!(h==='prints'||h==='moroccan'))window.scrollTo(0,0);
 }
 document.getElementById('cartbtn').onclick=()=>{location.hash='cart'};
