@@ -412,7 +412,7 @@ function shop(){
       <span class="cta">לבניית הסט</span></div>
   </a>`:''}
   <section class="wrap sec" id="game" style="padding-top:40px">
-    <div class="sec-h" style="display:block;text-align:center"><h2>המשחק</h2><p>משחק משפחתי במילים מרוקאיות, מהטלפון</p></div>
+    <div class="sec-h" style="display:block;text-align:center"><h2>נעביבשק · המשחק</h2><p>המילים של סבתא, סביב השולחן · מהטלפון או עם קלפים</p></div>
     ${gameCard}
   </section>
   <div id="prints">
@@ -441,14 +441,71 @@ function shop(){
   </div>`;
 }
 // המשחק (game.naabibashk.co.il) — כרטיס ראשון בקולקציה המרוקאית
-// המשחק — קטע נפרד משלו, לפני הקולקציה המרוקאית (בקשה של פאני: נפרד, במרכז, למעלה)
-const gameCard=`
-      <a class="item" href="https://game.naabibashk.co.il/" style="max-width:320px;margin:0 auto 56px;text-align:center;align-items:center">
-        <div class="ph" style="width:100%"><img loading="lazy" src="img/game.jpg" alt="נעביבשק · המשחק"></div>
-        <h3>נעביבשק · המשחק</h3>
-        <div class="sub">משחק משפחתי במילים מרוקאיות, משחקים מהטלפון · יש משחק ניסיון בחינם</div>
-        <div class="pr" style="justify-content:center;gap:16px"><span>מ־${nis(39)}</span><span class="go">לשחק ←</span></div>
+// המשחק — שני מוצרים זה לצד זה (אונליין + קופסת קלפים), לכל אחד דף מכירה משלו: #play ו־#cards
+const GAME_URL='https://game.naabibashk.co.il/', BOX_PRICE=99; // מחיר הקופסה — הצעה, ממתין לאישור של פאני
+const WA_GAME=t=>`https://wa.me/${BIZ.wa}?text=${encodeURIComponent(t)}`;
+const gItem=(href,src,alt,name,sub,price,go)=>`
+      <a class="item" href="${href}" style="text-align:center;align-items:center">
+        <div class="ph" style="width:100%"><img loading="lazy" src="${src}" alt="${alt}"></div>
+        <h3>${name}</h3>
+        <div class="sub">${sub}</div>
+        <div class="pr" style="justify-content:center;gap:16px"><span>${price}</span><span class="go">${go}</span></div>
       </a>`;
+const gameCard=`<div class="grid" style="grid-template-columns:repeat(2,minmax(0,320px));justify-content:center;margin-bottom:56px">
+  ${gItem('#play','img/game.jpg','נעביבשק · המשחק','משחקים מהטלפון','מסך אחד בסלון וכל אחד עונה מהטלפון · יש משחק ניסיון בחינם','מ־'+nis(39),'לפרטים ←')}
+  ${gItem('#cards','img/game-box.jpg','קלפי המשחק נעביבשק','קופסת הקלפים','120 קלפים מודפסים · זוג נגד זוג סביב השולחן',nis(BOX_PRICE),'לפרטים ←')}
+</div>`;
+function playView(){
+  V.innerHTML=`
+  <section class="wrap pp">
+    <div>
+      <div class="main"><img src="img/game.jpg" alt="נעביבשק · המשחק"></div>
+      <a class="back" href="#game">חזרה למשחק</a>
+    </div>
+    <div>
+      <h1>משחקים מהטלפון</h1>
+      <div class="by">נעביבשק · המשחק · המילים של סבתא, סביב השולחן</div>
+      <p>משחק משפחתי של "הסבר את המילה" עם מילים מרוקאיות של יום־יום. על המסך מופיעה מילה, רמז חדש נחשף כל כמה שניות, וכל אחד עונה מהטלפון שלו. הדורות משחקים ביחד, ובסוף הערב כולם יודעים עוד כמה מילים מהבית.</p>
+      <p>מסך אחד בסלון (טלוויזיה או לפטופ) וכל אחד עם הטלפון שלו. אין טלוויזיה? פותחים חדר מטלפון אחד ומשחקים רק מהטלפונים.</p>
+      <div class="row" style="gap:12px;flex-wrap:wrap">
+        <a class="cta" href="${GAME_URL}" target="_blank" rel="noopener">משחק ניסיון בחינם</a>
+        <a class="cta ghost" href="${WA_GAME('שלום, אני רוצה כרטיס לערב משחק נעביבשק')}" target="_blank" rel="noopener">לרכישת כרטיס בוואטסאפ</a>
+      </div>
+      <dl class="spec">
+        <div><dt>משפחתי · עד 10</dt><dd>${nis(39)}</dd></div>
+        <div><dt>אירוע · עד 30</dt><dd>${nis(99)}</dd></div>
+        <div><dt>אירוע · עד 50</dt><dd>${nis(149)}</dd></div>
+        <div><dt>אירוע · עד 80</dt><dd>${nis(199)}</dd></div>
+        <div><dt>תוקף הכרטיס</dt><dd>12 שעות מרגע הקנייה</dd></div>
+        <div><dt>משחק ניסיון</dt><dd>בחינם · 5 מילים · עד 10 משתתפים</dd></div>
+      </dl>
+    </div>
+  </section>`;
+}
+function cardsView(){
+  V.innerHTML=`
+  <section class="wrap pp">
+    <div>
+      <div class="main"><img src="img/game-box.jpg" alt="קלפי המשחק נעביבשק"></div>
+      <a class="back" href="#game">חזרה למשחק</a>
+    </div>
+    <div>
+      <h1>קופסת הקלפים</h1>
+      <div class="by">נעביבשק · המשחק · 120 קלפים מודפסים</div>
+      <p>על כל קלף מילה מרוקאית מנוקדת, 3 רמזים מהקשה לקל, והפירוש. המסביר אומר את המילה בקול ונותן רמזים, והשותף מנחש מה היא אומרת בעברית. זוג נגד זוג, ומי שאוסף ראשון 15 קלפים מנצח.</p>
+      <p>⭐ פעם בתור מותר להגיד "סבתא תגידי" ולבקש עזרה ממי שמכיר.</p>
+      <div class="row" style="gap:12px;flex-wrap:wrap">
+        <a class="cta" href="${WA_GAME('שלום, אני רוצה להזמין את קופסת הקלפים של נעביבשק')}" target="_blank" rel="noopener">להזמנה בוואטסאפ</a>
+      </div>
+      <dl class="spec">
+        <div><dt>מחיר</dt><dd>${nis(BOX_PRICE)}</dd></div>
+        <div><dt>בקופסה</dt><dd>120 קלפים בגודל קלף משחק (6.3×8.8 ס״מ) ודף חוקים</dd></div>
+        <div><dt>משתתפים</dt><dd>4 ומעלה, זוג נגד זוג</dd></div>
+        <div><dt>משלוח</dt><dd>שליח עד הבית, ${nis(SHIP)} להזמנה</dd></div>
+      </dl>
+    </div>
+  </section>`;
+}
 const card=p=>`
       <a class="item" href="#${p.id}">
         <div class="ph fc"><img loading="lazy" src="${img(p.id,p.def||'natural')}" alt="${p.plain} ממוסגר"></div>
@@ -851,7 +908,7 @@ function thanks(){
 function route(){
   const h=location.hash.slice(1);
   const p=P.find(x=>x.id===h);
-  if(p)product(p);else if(h==='trip'&&TRIP_ON)tripView();else if(h==='set'&&SET_ON)setView();else if(h==='cart')cartView();else if(h==='about')about();else if(LEGAL[h])legal(h);else if(h==='thanks')thanks();else{shop();if(h==='prints'||h==='moroccan'||h==='game')document.getElementById(h).scrollIntoView()}
+  if(p)product(p);else if(h==='trip'&&TRIP_ON)tripView();else if(h==='set'&&SET_ON)setView();else if(h==='cart')cartView();else if(h==='about')about();else if(LEGAL[h])legal(h);else if(h==='thanks')thanks();else if(h==='play')playView();else if(h==='cards')cardsView();else{shop();if(h==='prints'||h==='moroccan'||h==='game')document.getElementById(h).scrollIntoView()}
   if(!(h==='prints'||h==='moroccan'||h==='game'))window.scrollTo(0,0);
 }
 document.getElementById('cartbtn').onclick=()=>{location.hash='cart'};
