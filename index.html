@@ -248,6 +248,7 @@ footer .fcontact a{color:inherit}
 <header><div class="wrap">
   <a class="brand" href="#shop"><img src="img/logo.png" alt=""><span>נעביבשק<small>מילים שגדלנו עליהן</small></span></a>
   <nav>
+    <a href="#game" class="hide">נעביבשק · המשחק</a>
     <a href="#moroccan" class="hide">קולקציה מרוקאית</a>
     <a href="#shop" class="hide">ההדפסים</a>
     <a href="#about" class="hide">על המותג</a>
@@ -410,6 +411,10 @@ function shop(){
       <p>השפה שלה, השפה שלו, ובאמצע קיבוץ גלויות בצבע שנולד משניהם. בוחרים שתי מילים מהבית ושני צבעים, והצבע השלישי מתערבב לבד.</p>
       <span class="cta">לבניית הסט</span></div>
   </a>`:''}
+  <section class="wrap sec" id="game" style="padding-top:40px">
+    <div class="sec-h" style="display:block;text-align:center"><h2>המשחק</h2><p>משחק משפחתי במילים מרוקאיות, מהטלפון</p></div>
+    ${gameCard}
+  </section>
   <div id="prints">
   <section class="wrap sec" id="moroccan" style="padding-top:40px">
     <div class="sec-h"><h2>קולקציה מרוקאית</h2><p>מילים, פיוטים ושירי חינה מהבית המרוקאי</p></div>
@@ -435,6 +440,15 @@ function shop(){
   </section>
   </div>`;
 }
+// המשחק (game.naabibashk.co.il) — כרטיס ראשון בקולקציה המרוקאית
+// המשחק — קטע נפרד משלו, לפני הקולקציה המרוקאית (בקשה של פאני: נפרד, במרכז, למעלה)
+const gameCard=`
+      <a class="item" href="https://game.naabibashk.co.il/" style="max-width:320px;margin:0 auto 56px;text-align:center;align-items:center">
+        <div class="ph" style="width:100%"><img loading="lazy" src="img/game.jpg" alt="נעביבשק · המשחק"></div>
+        <h3>נעביבשק · המשחק</h3>
+        <div class="sub">משחק משפחתי במילים מרוקאיות, משחקים מהטלפון · יש משחק ניסיון בחינם</div>
+        <div class="pr" style="justify-content:center;gap:16px"><span>מ־${nis(39)}</span><span class="go">לשחק ←</span></div>
+      </a>`;
 const card=p=>`
       <a class="item" href="#${p.id}">
         <div class="ph fc"><img loading="lazy" src="${img(p.id,p.def||'natural')}" alt="${p.plain} ממוסגר"></div>
@@ -837,8 +851,8 @@ function thanks(){
 function route(){
   const h=location.hash.slice(1);
   const p=P.find(x=>x.id===h);
-  if(p)product(p);else if(h==='trip'&&TRIP_ON)tripView();else if(h==='set'&&SET_ON)setView();else if(h==='cart')cartView();else if(h==='about')about();else if(LEGAL[h])legal(h);else if(h==='thanks')thanks();else{shop();if(h==='prints'||h==='moroccan')document.getElementById(h).scrollIntoView()}
-  if(!(h==='prints'||h==='moroccan'))window.scrollTo(0,0);
+  if(p)product(p);else if(h==='trip'&&TRIP_ON)tripView();else if(h==='set'&&SET_ON)setView();else if(h==='cart')cartView();else if(h==='about')about();else if(LEGAL[h])legal(h);else if(h==='thanks')thanks();else{shop();if(h==='prints'||h==='moroccan'||h==='game')document.getElementById(h).scrollIntoView()}
+  if(!(h==='prints'||h==='moroccan'||h==='game'))window.scrollTo(0,0);
 }
 document.getElementById('cartbtn').onclick=()=>{location.hash='cart'};
 addEventListener('hashchange',route);
