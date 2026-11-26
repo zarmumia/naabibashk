@@ -455,6 +455,16 @@ const gameCard=`<div class="grid" style="grid-template-columns:repeat(2,minmax(0
   ${gItem('#play','img/game-online.jpg','המשחק על מסך הטלוויזיה ובטלפונים','בטלוויזיה ובטלפון','המילה על המסך, כל אחד עונה מהטלפון','מ־'+nis(39),'לפרטים ←')}
   ${gItem('#cards','img/game-box.jpg','קלפי המשחק נעביבשק','קופסת הקלפים','120 קלפים, משחקים סביב השולחן',nis(BOX_PRICE),'לפרטים ←')}
 </div>`;
+// דף משלו למשחק (#game) — הקישור בתפריט העליון מוביל לכאן
+function gameView(){
+  V.innerHTML=`
+  <section class="wrap sec" style="padding-top:48px;text-align:center">
+    <h1 style="font-size:clamp(38px,5vw,60px);line-height:1.1">נעביבשק · המשחק</h1>
+    <p style="color:var(--ink-soft);margin:8px 0 18px">המילים של סבתא, סביב השולחן · מהטלפון או עם קלפים</p>
+    <p style="max-width:620px;margin:0 auto 36px">משחק משפחתי של "הסבר את המילה" עם מילים מרוקאיות של יום־יום. הדורות משחקים ביחד, ובסוף הערב כולם יודעים עוד כמה מילים מהבית.</p>
+    ${gameCard}
+  </section>`;
+}
 function playView(){
   V.innerHTML=`
   <section class="wrap pp">
@@ -463,7 +473,7 @@ function playView(){
       <a class="back" href="#game">חזרה למשחק</a>
     </div>
     <div>
-      <h1>משחקים מהטלפון</h1>
+      <h1>משחקים מהטלפון ומהטלוויזיה</h1>
       <div class="by">נעביבשק · המשחק · המילים של סבתא, סביב השולחן</div>
       <p>משחק משפחתי של "הסבר את המילה" עם מילים מרוקאיות של יום־יום. על המסך מופיעה מילה, רמז חדש נחשף כל כמה שניות, וכל אחד עונה מהטלפון שלו. הדורות משחקים ביחד, ובסוף הערב כולם יודעים עוד כמה מילים מהבית.</p>
       <p>מסך אחד בסלון (טלוויזיה או לפטופ) וכל אחד עם הטלפון שלו. אין טלוויזיה? פותחים חדר מטלפון אחד ומשחקים רק מהטלפונים.</p>
@@ -908,8 +918,8 @@ function thanks(){
 function route(){
   const h=location.hash.slice(1);
   const p=P.find(x=>x.id===h);
-  if(p)product(p);else if(h==='trip'&&TRIP_ON)tripView();else if(h==='set'&&SET_ON)setView();else if(h==='cart')cartView();else if(h==='about')about();else if(LEGAL[h])legal(h);else if(h==='thanks')thanks();else if(h==='play')playView();else if(h==='cards')cardsView();else{shop();if(h==='prints'||h==='moroccan'||h==='game')document.getElementById(h).scrollIntoView()}
-  if(!(h==='prints'||h==='moroccan'||h==='game'))window.scrollTo(0,0);
+  if(p)product(p);else if(h==='trip'&&TRIP_ON)tripView();else if(h==='set'&&SET_ON)setView();else if(h==='cart')cartView();else if(h==='about')about();else if(LEGAL[h])legal(h);else if(h==='thanks')thanks();else if(h==='play')playView();else if(h==='cards')cardsView();else if(h==='game')gameView();else{shop();if(h==='prints'||h==='moroccan')document.getElementById(h).scrollIntoView()}
+  if(!(h==='prints'||h==='moroccan'))window.scrollTo(0,0);
 }
 document.getElementById('cartbtn').onclick=()=>{location.hash='cart'};
 addEventListener('hashchange',route);
