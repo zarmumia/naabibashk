@@ -375,6 +375,7 @@ const V=document.getElementById('view');
 // כל הדפס מופיע פעם אחת בדף הבית
 const MOR=['p18','p19','p20','p26','p28','p29','p30','p2','p4','p3','p16','p17']; // קולקציה מרוקאית: מילים, פיוטים וחינה
 const SHAB=['p9','p8','p27','p12','p13'];                                          // שבת ופיוטים
+const KIDS_TOO=['p12','p13'];                                         // ישמך לבן ולבת — גם בשבת וגם בילדים (בקשת פאני 26/11/2026)
 function shop(){
   V.innerHTML=`
   <section class="bhero">
@@ -436,7 +437,7 @@ function shop(){
   </section>
   <section class="wrap sec" id="kids" style="padding-top:0">
     <div class="sec-h"><h2>לילדים</h2><p>לחדר ילדים · מתנת לידה · בר מצווה</p></div>
-    <div class="grid">${P.filter(p=>p.s==='kids'&&!SHAB.includes(p.id)).map(card).join('')}</div>
+    <div class="grid">${P.filter(p=>p.s==='kids'&&(!SHAB.includes(p.id)||KIDS_TOO.includes(p.id))).map(card).join('')}</div>
   </section>
   </div>`;
 }
