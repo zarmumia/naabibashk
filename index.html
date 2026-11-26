@@ -63,6 +63,17 @@ nav a{text-decoration:none;color:var(--ink-soft)}
 nav a:hover{color:var(--ink)}
 .cartbtn{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--ink);background:none;padding:6px 14px;border-radius:999px;font-size:15px}
 .cartbtn b{font-variant-numeric:tabular-nums;font-weight:600}
+/* תפריט בטלפון: שורת קישורים מתחת לכותרת (במחשב מוסתרת — שם הקישורים בכותרת) */
+.mnav{display:none}
+@media (max-width:860px){
+  .mnav{display:flex;justify-content:center;gap:6px;padding:0 max(12px,env(safe-area-inset-right,0px)) 12px max(12px,env(safe-area-inset-left,0px));scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .mnav::-webkit-scrollbar{display:none}
+  .mnav a{flex:none;display:inline-flex;align-items:center;min-height:44px;padding:0 10px;border:1px solid var(--line);border-radius:999px;text-decoration:none;color:var(--ink);font-size:15px;white-space:nowrap;background:var(--paper)}
+  .mnav a[aria-current="page"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+}
+@media (max-width:380px){
+  .mnav{gap:4px;padding-inline:8px}.mnav a{padding:0 7px;font-size:14px}
+}
 
 /* פתיח */
 .hero{display:grid;grid-template-columns:1.05fr 1fr;gap:48px;align-items:center;padding-block:48px 56px}
@@ -254,7 +265,9 @@ footer .fcontact a{color:inherit}
     <a href="#about" class="hide">על המותג</a>
     <button class="cartbtn" id="cartbtn" type="button" aria-label="לעגלה">עגלה <b id="count">0</b></button>
   </nav>
-</div></header>
+</div>
+<nav class="mnav" aria-label="תפריט"><a href="#game">המשחק</a><a href="#moroccan">קולקציה מרוקאית</a><a href="#shop">ההדפסים</a><a href="#about">על המותג</a></nav>
+</header>
 
 <main id="view"></main>
 
@@ -942,6 +955,9 @@ function route(){
 }
 document.getElementById('cartbtn').onclick=()=>{location.hash='cart'};
 addEventListener('hashchange',route);
+// בטלפון: מסמנים בתפריט את הדף שבו נמצאים
+function markNav(){const h=location.hash.slice(1),g=['game','play','cards'].includes(h)?'game':h==='moroccan'?'moroccan':h==='about'?'about':(h==='shop'||h==='prints'||P.some(x=>x.id===h))?'shop':'';document.querySelectorAll('.mnav a').forEach(a=>a.setAttribute('aria-current',a.getAttribute('href')==='#'+g?'page':'false'))}
+addEventListener('hashchange',markNav);markNav();
 addEventListener('resize',()=>{if(location.hash==='#set'){const s=document.getElementById('stage');s&&s.dispatchEvent(new Event('rs'))}});
 updCount();route();
 if(isShabbat()){const d=document.createElement('div');d.className='demo';d.textContent='שבת שלום וחג שמח · החנות סגורה להזמנות עד מוצאי שבת והחג';document.body.prepend(d)}
