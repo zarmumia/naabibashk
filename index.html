@@ -452,7 +452,7 @@ const gItem=(href,src,alt,name,sub,price,go)=>`
         <div class="pr" style="justify-content:center;gap:16px"><span>${price}</span><span class="go">${go}</span></div>
       </a>`;
 const gameCard=`<div class="grid" style="grid-template-columns:repeat(2,minmax(0,320px));justify-content:center;margin-bottom:56px">
-  ${gItem('#play','img/game-online.jpg','המשחק על מסך הטלוויזיה ובטלפונים','בטלוויזיה ובטלפון','המילה על המסך, כל אחד עונה מהטלפון','מ־'+nis(39),'לפרטים ←')}
+  ${gItem('#play','img/game-online.jpg?v=3','המשחק על מסך הטלוויזיה ובטלפונים','בטלוויזיה ובטלפון','המילה על המסך, כל אחד עונה מהטלפון','מ־'+nis(39),'לפרטים ←')}
   ${gItem('#cards','img/game-box.jpg','קלפי המשחק נעביבשק','קופסת הקלפים','120 קלפים, משחקים סביב השולחן',nis(BOX_PRICE),'לפרטים ←')}
 </div>`;
 // דף משלו למשחק (#game) — הקישור בתפריט העליון מוביל לכאן
@@ -469,14 +469,28 @@ function playView(){
   V.innerHTML=`
   <section class="wrap pp">
     <div>
-      <div class="main"><img src="img/game-online.jpg" alt="המשחק על מסך הטלוויזיה ובטלפונים"></div>
+      <div class="main"><img src="img/game-online.jpg?v=3" alt="המשחק על מסך הטלוויזיה ובטלפונים"></div>
       <a class="back" href="#game">חזרה למשחק</a>
     </div>
     <div>
       <h1>משחקים מהטלפון ומהטלוויזיה</h1>
       <div class="by">נעביבשק · המשחק · המילים של סבתא, סביב השולחן</div>
-      <p>משחק משפחתי של "הסבר את המילה" עם מילים מרוקאיות של יום־יום. על המסך מופיעה מילה, רמז חדש נחשף כל כמה שניות, וכל אחד עונה מהטלפון שלו. הדורות משחקים ביחד, ובסוף הערב כולם יודעים עוד כמה מילים מהבית.</p>
-      <p>מסך אחד בסלון (טלוויזיה או לפטופ) וכל אחד עם הטלפון שלו. אין טלוויזיה? פותחים חדר מטלפון אחד ומשחקים רק מהטלפונים.</p>
+      <!-- הנוסח אושר על ידי פאני 26/11/2026 -->
+      <p>משחק למשפחות ולקבוצות: בבית, בערב חברים ובאירועים, עד 80 משתתפים.</p>
+      <h3 style="margin:22px 0 8px">איך משחקים</h3>
+      <ol style="margin:0 0 14px;padding-inline-start:22px;line-height:1.7">
+        <li>פותחים את המשחק בטלוויזיה או בלפטופ, ועל המסך מופיע מספר חדר.</li>
+        <li>כל אחד נכנס מהטלפון שלו, מקליד את המספר וכותב את השם שלו.</li>
+        <li>על המסך מופיעה מילה מרוקאית, וכל כמה שניות נחשף עוד רמז.</li>
+        <li>כל אחד בוחר בטלפון מה פירוש המילה. מי שעונה נכון לפני שנחשפים כל הרמזים מקבל יותר נקודות.</li>
+      </ol>
+      <p>בסוף רואים מי ניצח, וגם את כל המילים שלמדנו בערב.</p>
+      <h3 style="margin:22px 0 8px">שתי דרכים לשחק</h3>
+      <ul style="margin:0 0 14px;padding-inline-start:22px;line-height:1.7">
+        <li><b>כל אחד לעצמו:</b> כל אחד עונה מהטלפון שלו וצובר נקודות.</li>
+        <li><b>זוג נגד זוג:</b> אחד מסביר בקול והשותף מנחש, כמו במשחק הקלפים.</li>
+      </ul>
+      <p><b>אין טלוויזיה?</b> פותחים חדר מטלפון אחד ומשחקים רק מהטלפונים.</p>
       <div class="row" style="gap:12px;flex-wrap:wrap">
         <a class="cta" href="${GAME_URL}" target="_blank" rel="noopener">משחק ניסיון בחינם</a>
         <a class="cta ghost" href="${WA_GAME('שלום, אני רוצה כרטיס לערב משחק נעביבשק')}" target="_blank" rel="noopener">לרכישת כרטיס בוואטסאפ</a>
